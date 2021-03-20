@@ -24,5 +24,5 @@ class Seperator:
 
     def do(self):
         self.duty = np.interp(self.rotation, [0, 180], [2, 12])
-        print(self.duty)
+        # print(self.duty)
         # servo.ChangeDutyCycle(self.duty)
