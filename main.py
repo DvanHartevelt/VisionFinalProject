@@ -26,6 +26,8 @@ def main():
         index = 0
     else:
         # TODO implement camera interaction
+
+        # cap = cv2.VideoCapture(0)
         pass
 
     lastSeenColour = "None"
@@ -47,8 +49,6 @@ def main():
 
         print(f"Last seen colour egg: {lastSeenColour}.")
 
-        divide.do()
-
         if testing:
             cv2.imshow("Egg", eggs[index])
             cv2.waitKey(1)
@@ -57,8 +57,26 @@ def main():
                 starttime = time.time()
                 index = (index + 1) % len(eggs)
 
+def testCam():
+    cap = cv2.VideoCapture(0)
+
+    i = 0
+
+    while True:
+
+        if i % 100 == 0:
+
+            ret, frame = cap.read()
+            print(ret)
+
+            cv2.imshow("Camera capture", frame)
+
+
+        i += 1
+
 
 
 
 if __name__ == "__main__":
+    testCam()
     main()
