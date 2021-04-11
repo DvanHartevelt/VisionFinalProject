@@ -14,6 +14,9 @@ import RPi.GPIO as GPIO
 def main():
     Testpictures = False
     useServo = True
+    samplingfrequency = 4 # in Hz
+
+    dtmax = 1 / samplingfrequency
 
     if useServo:
         GPIO.setmode(GPIO.BOARD)
@@ -38,43 +41,48 @@ def main():
 
     lastSeenColour = "None"
 
+    t0 = time.time()
     while True:
-        if Testpictures:
-            seenColour, hue = getEggColour(eggs[index])
-        else:
-            ret, frame = cap.read()
+        t1 = time.time()
+        dt = t1 - t0
 
-            windowPoints = [[300, 300], [300, 200], [400, 300], [400, 200]]
-            window = warpImg(frame, windowPoints, 300, 300)
-
-            cv2.imshow("Camera capture", frame)
-            cv2.imshow("window", window)
-            cv2.waitKey(1)
-
-            seenColour, hue = getEggColour(window, useSliders=True)
-            # print(f"Seen colour: {seenColour}")
-
-        if seenColour != "None" and seenColour != lastSeenColour:
-            lastSeenColour = seenColour
-            print(f"Hue found was {hue}.")
-            if lastSeenColour == "red":
-                print("opening")
-                if useServo:
-                    servo.ChangeDutyCycle(3.1)
+        if dt > dtmax: # this is so the detection is only done 4 times per second
+            # Step 1: retrieving the picture, and extracting the colour
+            if Testpictures:
+                seenColour, hue = getEggColour(eggs[index])
             else:
-                print("closing")
-                if useServo:
-                    servo.ChangeDutyCycle(6.4)
+                ret, frame = cap.read()
 
-        #print(f"Last seen colour egg: {lastSeenColour}.")
+                windowPoints = [[300, 300], [300, 200], [400, 300], [400, 200]]
+                window = warpImg(frame, windowPoints, 300, 300)
 
-        if Testpictures:
-            cv2.imshow("Egg", eggs[index])
-            cv2.waitKey(1)
+                cv2.imshow("Camera capture", frame)
+                cv2.imshow("window", window)
+                cv2.waitKey(1)
 
-            if time.time() - starttime > 2:
-                starttime = time.time()
-                index = (index + 1) % len(eggs)
+                seenColour, hue = getEggColour(window, useSliders=True)
+                # print(f"Seen colour: {seenColour}")
+
+            # Step 2: Checking if the bottom path needs to be closed
+            if seenColour != "None" and seenColour != lastSeenColour:
+                lastSeenColour = seenColour
+                print(f"Hue found was {hue}.")
+                if lastSeenColour == "red":
+                    print("Closing bottom path")
+                    if useServo:
+                        servo.ChangeDutyCycle(3.1)
+                else:
+                    print("Opening bottom path")
+                    if useServo:
+                        servo.ChangeDutyCycle(6.4)
+
+
+            if Testpictures:
+                cv2.imshow("Egg", eggs[index])
+                cv2.waitKey(1)
+                if time.time() - starttime > 2:
+                    starttime = time.time()
+                    index = (index + 1) % len(eggs)
 
 def testCam():
     cap = cv2.VideoCapture(0)

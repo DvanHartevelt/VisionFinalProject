@@ -5,7 +5,7 @@ def getMask(mask, minArea=1000):
     """
     Finds the largest mask of a coloured egg, and returns said mask.
 
-    :param mask: mask after HSV ranging
+    :param mask: mask after HLS ranging
     :param minArea: Minimum area of egg
     :return: isEgg: Bool if there is an egg at all
              newMask: new mask
@@ -37,12 +37,12 @@ def getMask(mask, minArea=1000):
 
         # Filling in the new contour-based mask
         im_floodfill = maskNew.copy()
-        maskk = np.zeros((h + 2, w + 2), np.uint8)
-        cv2.floodFill(im_floodfill, maskk, (0, 0), 255);
+        maskk = np.zeros((h + 2, w + 2), np.uint8) # for some reason, cv2.floodfill needs this
+        cv2.floodFill(im_floodfill, maskk, (0, 0), 255)
         im_floodfill_inv = cv2.bitwise_not(im_floodfill)
         newnewMask = maskNew | im_floodfill_inv
 
-        # erode the mask
+        # erode the mask a little
         trueMask = cv2.erode(newnewMask, np.ones([3,3], dtype=np.uint8), iterations=4)
 
         return True, trueMask
@@ -69,7 +69,6 @@ def getEggColour(img, useSliders = False):
 
     if isEgg:
         mean = cv2.mean(imgHLS, maskNew)
-        # print(f"detected hue: {mean[0]}.")
 
         if useSliders:
             maskedegg = cv2.bitwise_and(img, img, mask=maskNew)
@@ -84,6 +83,7 @@ def getEggColour(img, useSliders = False):
             cv2.imshow("masked egg", maskedegg)
             cv2.waitKey(1)
 
+        # colour detection
         colourNames = ["yellow", "blue", "red"]
         colourHues = [9, 109, 165]
 
@@ -122,7 +122,6 @@ def showTrackbars():
     cv2.createTrackbar("Sat Min", "Trackbars", 34, 255, printTrackbars)
     cv2.createTrackbar("Sat Max", "Trackbars", 255, 255, printTrackbars)
     cv2.createTrackbar("Area Min", "Trackbars", 661, 2000, printTrackbars)
-
 
     return printTrackbars
 
