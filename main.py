@@ -17,8 +17,8 @@ def main():
 
     if useServo:
         GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(11, GPIO.OUT)
-        servo = GPIO.PWM(11, 50)
+        GPIO.setup(13, GPIO.OUT)
+        servo = GPIO.PWM(13, 50)
         servo.start(6.4) # 6.4 is open, 6.1 is closed
 
     if Testpictures:
