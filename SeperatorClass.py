@@ -17,13 +17,11 @@ class Seperator:
     def open(self):
         self.rotation = 20
         self.duty = np.interp(self.rotation, [0, 180], [2, 12])
-        print(self.duty)
         servo.ChangeDutyCycle(self.duty)
         pass
 
     def close(self):
         self.rotation = 80
         self.duty = np.interp(self.rotation, [0, 180], [2, 12])
-        print(self.duty)
         servo.ChangeDutyCycle(self.duty)
         pass

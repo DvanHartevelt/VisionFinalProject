@@ -7,11 +7,17 @@
 import cv2
 import numpy as np
 import time
-import SeperatorClass
-from ImageFunctions import getEggColour
+#import SeperatorClass
+from ImageFunctions import getEggColour, warpImg
+import RPi.GPIO as GPIO
 
 def main():
-    testing = True
+    testing = False
+
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(11, GPIO.OUT)
+    servo = GPIO.PWM(11, 50)
+    servo.start(0)
 
     if testing:
         imgBlue = cv2.imread("Testpictures/BlueEgg.jpeg")
@@ -25,29 +31,43 @@ def main():
         starttime = time.time()
         index = 0
     else:
-        # TODO implement camera interaction
-
-        # cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(0)
         pass
 
     lastSeenColour = "None"
 
-    divide = SeperatorClass.Seperator()
+    # divide = SeperatorClass.Seperator()
 
     while True:
         if testing:
             seenColour = getEggColour(eggs[index])
         else:
-            pass
+            ret, frame = cap.read()
+
+            windowPoints = [[300, 300], [300, 200], [400, 300], [400, 200]]
+            window = warpImg(frame, windowPoints, 300, 300)
+
+            cv2.imshow("Camera capture", frame)
+            cv2.imshow("window", window)
+            cv2.waitKey(1)
+
+            seenColour = getEggColour(window)
+            # print(f"Seen colour: {seenColour}")
 
         if seenColour != "None" and seenColour != lastSeenColour:
             lastSeenColour = seenColour
             if lastSeenColour == "red":
-                divide.open()
+                print("opening")
+                duty = np.interp(20, [0, 180], [2, 12])
+                servo.ChangeDutyCycle(duty)
+                # divide.open()
             else:
-                divide.close()
+                print("closing")
+                duty = np.interp(80, [0, 180], [2, 12])
+                servo.ChangeDutyCycle(duty)
+                #divide.close()
 
-        print(f"Last seen colour egg: {lastSeenColour}.")
+        #print(f"Last seen colour egg: {lastSeenColour}.")
 
         if testing:
             cv2.imshow("Egg", eggs[index])
@@ -60,23 +80,16 @@ def main():
 def testCam():
     cap = cv2.VideoCapture(0)
 
-    i = 0
-
     while True:
+        ret, frame = cap.read()
+        print(ret)
 
-        if i % 100 == 0:
-
-            ret, frame = cap.read()
-            print(ret)
-
-            cv2.imshow("Camera capture", frame)
-
-
-        i += 1
+        cv2.imshow("Camera capture", frame)
+        cv2.waitKey(100)
 
 
 
 
 if __name__ == "__main__":
-    testCam()
+    #testCam()
     main()
