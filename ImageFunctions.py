@@ -73,11 +73,13 @@ def getEggColour(img, useSliders = False):
 
         if useSliders:
             maskedegg = cv2.bitwise_and(img, img, mask=maskNew)
-            outputTxt = "Mean Hue = " + str(int(mean[0])) + \
-                        "\r\n Mean Light = " + str(int(mean[1])) + \
-                        "\r\n Mean Sat = " + str(int(mean[2]))
+            outputTxt1 = "Mean Hue = " + str(int(mean[0]))
+            outputTxt2 = "Mean Light = " + str(int(mean[1]))
+            outputTxt3 = "Mean Sat = " + str(int(mean[2]))
 
-            cv2.putText(maskedegg, outputTxt, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 100, 100), 2)
+            cv2.putText(maskedegg, outputTxt1, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 100, 100), 2)
+            cv2.putText(maskedegg, outputTxt2, (50, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 100, 100), 2)
+            cv2.putText(maskedegg, outputTxt3, (50, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 100, 100), 2)
 
             cv2.imshow("masked egg", maskedegg)
             cv2.waitKey(1)
