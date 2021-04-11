@@ -13,7 +13,7 @@ import RPi.GPIO as GPIO
 
 def main():
     Testpictures = False
-    useServo = False
+    useServo = True
 
     if useServo:
         GPIO.setmode(GPIO.BOARD)

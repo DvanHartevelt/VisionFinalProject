@@ -84,8 +84,8 @@ def getEggColour(img, useSliders = False):
             cv2.imshow("masked egg", maskedegg)
             cv2.waitKey(1)
 
-        colourNames = ["red", "yellow", "green", "blue", "red"]
-        colourHues = [18, 25, 82, 94, 180]
+        colourNames = ["yellow", "blue", "red"]
+        colourHues = [9, 109, 165]
 
         closestColourIndex = 0
         for i in range(len(colourHues)):
