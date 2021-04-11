@@ -88,8 +88,8 @@ def showTrackbars():
     def printTrackbars(printing=True):
         h_min = cv2.getTrackbarPos("Hue Min", "Trackbars")
         h_max = cv2.getTrackbarPos("Hue Max", "Trackbars")
-        l_min = cv2.getTrackbarPos("Val Min", "Trackbars")
-        l_max = cv2.getTrackbarPos("Val Max", "Trackbars")
+        l_min = cv2.getTrackbarPos("Lit Min", "Trackbars")
+        l_max = cv2.getTrackbarPos("Lit Max", "Trackbars")
         s_min = cv2.getTrackbarPos("Sat Min", "Trackbars")
         s_max = cv2.getTrackbarPos("Sat Max", "Trackbars")
 
