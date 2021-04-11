@@ -73,17 +73,17 @@ def getEggColour(img, useSliders = False):
 
         if useSliders:
             maskedegg = cv2.bitwise_and(img, img, mask=maskNew)
-            outputTxt = "Mean Hue = " + str(mean[0]) + \
-                        "\n Mean Light = " + str(mean[1]) + \
-                        "\n Mean Sat = " + str(mean[2])
+            outputTxt = "Mean Hue = " + str(int(mean[0])) + \
+                        "\r\n Mean Light = " + str(int(mean[1])) + \
+                        "\r\n Mean Sat = " + str(int(mean[2]))
 
-            cv2.putText(maskedegg, outputTxt, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 100, 100), 2)
+            cv2.putText(maskedegg, outputTxt, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 100, 100), 2)
 
             cv2.imshow("masked egg", maskedegg)
             cv2.waitKey(1)
 
-        colourNames = ["red", "yellow", "green", "blue"]
-        colourHues = [18, 25, 82, 94]
+        colourNames = ["red", "yellow", "green", "blue", "red"]
+        colourHues = [18, 25, 82, 94, 180]
 
         closestColourIndex = 0
         for i in range(len(colourHues)):
@@ -113,8 +113,8 @@ def showTrackbars():
 
     cv2.namedWindow("Trackbars")
     cv2.resizeWindow("Trackbars", 640, 240)
-    cv2.createTrackbar("Hue Min", "Trackbars", 0, 255, printTrackbars)
-    cv2.createTrackbar("Hue Max", "Trackbars", 179, 255, printTrackbars)
+    cv2.createTrackbar("Hue Min", "Trackbars", 0, 360, printTrackbars)
+    cv2.createTrackbar("Hue Max", "Trackbars", 360, 360, printTrackbars)
     cv2.createTrackbar("Lit Min", "Trackbars", 51, 255, printTrackbars)
     cv2.createTrackbar("Lit Max", "Trackbars", 171, 255, printTrackbars)
     cv2.createTrackbar("Sat Min", "Trackbars", 34, 255, printTrackbars)
