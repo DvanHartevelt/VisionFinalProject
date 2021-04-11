@@ -58,12 +58,14 @@ def getEggColour(img, useSliders = False):
     mask = cv2.inRange(imgHSV, lower, upper)
     isEgg, maskNew = getMask(mask)
 
-    cv2.imshow("mask", maskNew)
-    cv2.waitKey(1)
+    if useSliders:
+        cv2.imshow("mask", mask)
+        cv2.imshow("maskNew", maskNew)
+        cv2.waitKey(1)
 
     if isEgg:
         mean = cv2.mean(imgHSV, maskNew)
-        # print(f"detected hue: {mean[0]}.")
+        print(f"detected hue: {mean[0]}.")
 
         colourNames = ["red", "yellow", "green", "blue"]
         colourHues = [18, 25, 82, 94]
@@ -74,10 +76,10 @@ def getEggColour(img, useSliders = False):
                 closestColourIndex = i
 
         # print(f"The colour of this egg is: {colourNames[closestColourIndex]}, with an area of {cv2.countNonZero(maskNew)}.")
-        return colourNames[closestColourIndex]
+        return colourNames[closestColourIndex], mean
     else:
         # print("No egg in field of view")
-        return "None"
+        return "None", 0
 
 def showTrackbars():
     def printTrackbars(printing=True):
