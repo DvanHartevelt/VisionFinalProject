@@ -53,13 +53,14 @@ def getEggColour(img, useSliders = False):
     if not useSliders:
         lower = np.array([0, 58, 113])
         upper = np.array([179, 255, 255])
+        A_min = 1000
     else:
-        h_min, h_max, l_min, l_max, s_min, s_max = printTrackbars(printing=False)
+        h_min, h_max, l_min, l_max, s_min, s_max, A_min = printTrackbars(printing=False)
         lower = np.array([h_min, l_min, s_min])
         upper = np.array([h_max, l_max, s_max])
 
     mask = cv2.inRange(imgHLS, lower, upper)
-    isEgg, maskNew = getMask(mask)
+    isEgg, maskNew = getMask(mask, minArea=A_min)
 
     if useSliders:
         cv2.imshow("mask", mask)
@@ -92,11 +93,12 @@ def showTrackbars():
         l_max = cv2.getTrackbarPos("Lit Max", "Trackbars")
         s_min = cv2.getTrackbarPos("Sat Min", "Trackbars")
         s_max = cv2.getTrackbarPos("Sat Max", "Trackbars")
+        A_min = cv2.getTrackbarPos("Area Min", "Trackbars")
 
 
-        if printing: print(h_min, h_max, l_min, l_max, s_min, s_max)
+        if printing: print(h_min, h_max, l_min, l_max, s_min, s_max, A_min)
 
-        return h_min, h_max, l_min, l_max, s_min, s_max
+        return h_min, h_max, l_min, l_max, s_min, s_max, A_min
 
     cv2.namedWindow("Trackbars")
     cv2.resizeWindow("Trackbars", 640, 240)
@@ -106,6 +108,7 @@ def showTrackbars():
     cv2.createTrackbar("Lit Max", "Trackbars", 255, 255, printTrackbars)
     cv2.createTrackbar("Sat Min", "Trackbars", 58, 255, printTrackbars)
     cv2.createTrackbar("Sat Max", "Trackbars", 255, 255, printTrackbars)
+    cv2.createTrackbar("Area Min", "Trackbars", 1000, 2000, printTrackbars)
 
 
     return printTrackbars
