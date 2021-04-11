@@ -44,10 +44,10 @@ def getMask(mask, minArea=1000):
 
         return True, newnewMask
 
-def getEggColour(img):
+def getEggColour(img, useSliders = False):
     imgHSV = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-    if False:
+    if not useSliders:
         lower = np.array([0, 58, 113])
         upper = np.array([179, 255, 255])
     else:
