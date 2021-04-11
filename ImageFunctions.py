@@ -65,7 +65,7 @@ def getEggColour(img, useSliders = False):
 
     if isEgg:
         mean = cv2.mean(imgHSV, maskNew)
-        print(f"detected hue: {mean[0]}.")
+        # print(f"detected hue: {mean[0]}.")
 
         colourNames = ["red", "yellow", "green", "blue"]
         colourHues = [18, 25, 82, 94]
