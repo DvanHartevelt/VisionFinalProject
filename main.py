@@ -12,12 +12,12 @@ from ImageFunctions import getEggColour, warpImg
 import RPi.GPIO as GPIO
 
 def main():
-    testing = False
+    testing = True
 
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(11, GPIO.OUT)
-    servo = GPIO.PWM(11, 50)
-    servo.start(0)
+    # GPIO.setmode(GPIO.BOARD)
+    # GPIO.setup(11, GPIO.OUT)
+    # servo = GPIO.PWM(11, 50)
+    # servo.start(0)
 
     if testing:
         imgBlue = cv2.imread("Testpictures/BlueEgg.jpeg")
@@ -35,8 +35,6 @@ def main():
         pass
 
     lastSeenColour = "None"
-
-    # divide = SeperatorClass.Seperator()
 
     while True:
         if testing:
@@ -58,13 +56,11 @@ def main():
             lastSeenColour = seenColour
             if lastSeenColour == "red":
                 print("opening")
-                duty = np.interp(20, [0, 180], [2, 12])
-                servo.ChangeDutyCycle(duty)
+                servo.ChangeDutyCycle(3.1)
                 # divide.open()
             else:
                 print("closing")
-                duty = np.interp(80, [0, 180], [2, 12])
-                servo.ChangeDutyCycle(duty)
+                servo.ChangeDutyCycle(6.4)
                 #divide.close()
 
         #print(f"Last seen colour egg: {lastSeenColour}.")
