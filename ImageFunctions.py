@@ -77,7 +77,7 @@ def getEggColour(img, useSliders = False):
                         "\n Mean Light = " + str(mean[1]) + \
                         "\n Mean Sat = " + str(mean[2])
 
-            cv2.putText(maskedegg, outputTxt, (0, 0), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 100, 100), 1)
+            cv2.putText(maskedegg, outputTxt, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 100, 100), 2)
 
             cv2.imshow("masked egg", maskedegg)
             cv2.waitKey(1)
@@ -115,11 +115,11 @@ def showTrackbars():
     cv2.resizeWindow("Trackbars", 640, 240)
     cv2.createTrackbar("Hue Min", "Trackbars", 0, 255, printTrackbars)
     cv2.createTrackbar("Hue Max", "Trackbars", 179, 255, printTrackbars)
-    cv2.createTrackbar("Lit Min", "Trackbars", 113, 255, printTrackbars)
-    cv2.createTrackbar("Lit Max", "Trackbars", 255, 255, printTrackbars)
-    cv2.createTrackbar("Sat Min", "Trackbars", 58, 255, printTrackbars)
+    cv2.createTrackbar("Lit Min", "Trackbars", 51, 255, printTrackbars)
+    cv2.createTrackbar("Lit Max", "Trackbars", 171, 255, printTrackbars)
+    cv2.createTrackbar("Sat Min", "Trackbars", 34, 255, printTrackbars)
     cv2.createTrackbar("Sat Max", "Trackbars", 255, 255, printTrackbars)
-    cv2.createTrackbar("Area Min", "Trackbars", 1000, 2000, printTrackbars)
+    cv2.createTrackbar("Area Min", "Trackbars", 661, 2000, printTrackbars)
 
 
     return printTrackbars
