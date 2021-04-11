@@ -58,11 +58,13 @@ def main():
             lastSeenColour = seenColour
             if lastSeenColour == "red":
                 print("opening")
-                servo.ChangeDutyCycle(3.1)
+                if useServo:
+                    servo.ChangeDutyCycle(3.1)
                 # divide.open()
             else:
                 print("closing")
-                servo.ChangeDutyCycle(6.4)
+                if useServo:
+                    servo.ChangeDutyCycle(6.4)
                 #divide.close()
 
         #print(f"Last seen colour egg: {lastSeenColour}.")
