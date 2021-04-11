@@ -71,6 +71,17 @@ def getEggColour(img, useSliders = False):
         mean = cv2.mean(imgHLS, maskNew)
         # print(f"detected hue: {mean[0]}.")
 
+        if useSliders:
+            maskedegg = cv2.bitwise_and(img, img, mask=maskNew)
+            outputTxt = "Mean Hue = " + str(mean[0]) + \
+                        "\n Mean Light = " + str(mean[1]) + \
+                        "\n Mean Sat = " + str(mean[2])
+
+            cv2.putText(maskedegg, outputTxt, (0, 0), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 100, 100), 1)
+
+            cv2.imshow("masked egg", maskedegg)
+            cv2.waitKey(1)
+
         colourNames = ["red", "yellow", "green", "blue"]
         colourHues = [18, 25, 82, 94]
 
@@ -86,7 +97,7 @@ def getEggColour(img, useSliders = False):
         return "None", 0
 
 def showTrackbars():
-    def printTrackbars(printing=True):
+    def printTrackbars(printing=False):
         h_min = cv2.getTrackbarPos("Hue Min", "Trackbars")
         h_max = cv2.getTrackbarPos("Hue Max", "Trackbars")
         l_min = cv2.getTrackbarPos("Lit Min", "Trackbars")
