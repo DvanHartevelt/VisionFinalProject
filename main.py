@@ -14,7 +14,7 @@ import RPi.GPIO as GPIO
 def main():
     Testpictures = False
     useServo = True
-    samplingfrequency = 4 # in Hz
+    samplingfrequency = 12 # in Hz
 
     dtmax = 1 / samplingfrequency
 
@@ -74,7 +74,7 @@ def main():
                 else:
                     print("Opening bottom path")
                     if useServo:
-                        servo.ChangeDutyCycle(6.4)
+                        servo.ChangeDutyCycle(8.0)
 
 
             if Testpictures:
