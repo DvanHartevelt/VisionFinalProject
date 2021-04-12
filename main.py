@@ -5,18 +5,20 @@
 # by David van Hartevelt, March 2021
 
 import cv2
-import numpy as np
 import time
-#import SeperatorClass
 from ImageFunctions import getEggColour, warpImg
 import RPi.GPIO as GPIO
 
 def main():
+    # Debug variables
     Testpictures = False
     useServo = True
     samplingfrequency = 12 # in Hz
+    saveRedpic = True
 
+    # 'global' variables in this function
     dtmax = 1 / samplingfrequency
+    takepic = 0
 
     if useServo:
         GPIO.setmode(GPIO.BOARD)
@@ -47,9 +49,12 @@ def main():
         dt = t1 - t0
 
         if dt > dtmax: # this is so the detection is only done 4 times per second
-            # Step 1: retrieving the picture, and extracting the colour
+            # resetting timing
+            t0 = t1
+
+            # Step 1: retrieving the picture
             if Testpictures:
-                seenColour, hue = getEggColour(eggs[index])
+                window = eggs[index]
             else:
                 ret, frame = cap.read()
 
@@ -60,14 +65,21 @@ def main():
                 cv2.imshow("window", window)
                 cv2.waitKey(1)
 
-                seenColour, hue = getEggColour(window, useSliders=True)
-                # print(f"Seen colour: {seenColour}")
+                if takepic > 0:
+                    cv2.imwrite(f"Output/CameraCapture{takepic}.jpg", frame)
+                    cv2.imwrite(f"Output/Window.jpg{takepic}", window)
 
-            # Step 2: Checking if the bottom path needs to be closed
+            # Step 2: extracting egg colour
+            seenColour, hue = getEggColour(window, useSliders=True, takepic=takepic)
+
+            # Step 3: Checking if the bottom path needs to be closed
             if seenColour != "None" and seenColour != lastSeenColour:
                 lastSeenColour = seenColour
-                print(f"Hue found was {hue}.")
+                print(f"New hue found was {hue}. This is the colour {seenColour}.")
                 if lastSeenColour == "red":
+                    if saveRedpic:
+                        takepic = 2
+
                     print("Closing bottom path")
                     if useServo:
                         servo.ChangeDutyCycle(3.1)
@@ -76,7 +88,7 @@ def main():
                     if useServo:
                         servo.ChangeDutyCycle(8.0)
 
-
+            # Debug, showing the picture taken from the pre-loaded set.
             if Testpictures:
                 cv2.imshow("Egg", eggs[index])
                 cv2.waitKey(1)
@@ -84,19 +96,7 @@ def main():
                     starttime = time.time()
                     index = (index + 1) % len(eggs)
 
-def testCam():
-    cap = cv2.VideoCapture(0)
-
-    while True:
-        ret, frame = cap.read()
-        print(ret)
-
-        cv2.imshow("Camera capture", frame)
-        cv2.waitKey(100)
-
-
-
+            if takepic != 0: takepic -= 1
 
 if __name__ == "__main__":
-    #testCam()
     main()
