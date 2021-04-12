@@ -13,8 +13,8 @@ def main():
     # Debug variables
     Testpictures = False
     useServo = True
-    samplingfrequency = 12 # in Hz
-    saveRedpic = True
+    samplingfrequency = 24 # in Hz
+    saveRedpic = False
 
     # 'global' variables in this function
     dtmax = 1 / samplingfrequency
@@ -66,8 +66,8 @@ def main():
                 cv2.waitKey(1)
 
                 if takepic > 0:
-                    cv2.imwrite(f"Output/CameraCapture{takepic}.jpg", frame)
-                    cv2.imwrite(f"Output/Window.jpg{takepic}", window)
+                    cv2.imwrite(f"Output/CameraCapture{takepic}.png", frame)
+                    cv2.imwrite(f"Output/Window{takepic}.png", window)
 
             # Step 2: extracting egg colour
             seenColour, hue = getEggColour(window, useSliders=True, takepic=takepic)
@@ -78,7 +78,8 @@ def main():
                 print(f"New hue found was {hue}. This is the colour {seenColour}.")
                 if lastSeenColour == "red":
                     if saveRedpic:
-                        takepic = 2
+                        takepic = 5
+                        saveRedpic = False
 
                     print("Closing bottom path")
                     if useServo:

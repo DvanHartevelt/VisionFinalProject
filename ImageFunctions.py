@@ -75,6 +75,9 @@ def getEggColour(img, useSliders = False, takepic = 0):
         cv2.imshow("masked egg", maskedegg)
         cv2.waitKey(1)
 
+        if takepic > 0:
+            cv2.imwrite(f"Output/maskedEgg{takepic}.png", maskedegg)
+
     return colourNames[closestColourIndex], int(mean[0])
 
 def refineMask(mask, minArea=1000):
@@ -87,8 +90,8 @@ def refineMask(mask, minArea=1000):
         area = cv2.contourArea(contour)
         if area > minArea:
             peri = cv2.arcLength(contour, True)
-            approx = cv2.approxPolyDP(contour, 0.015 * peri, True)
-            finalContours.append([area, approx, contour])
+            # approx = cv2.approxPolyDP(contour, 0.01 * peri, True)
+            finalContours.append([area, contour])
 
     # Step 3: sorting the contours by area size, so the biggest one
     # (presumably the egg) is the first element
