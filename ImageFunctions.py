@@ -11,7 +11,7 @@ def warpImg(img, points, w, h, pad=20):
 
     return imgWarp
 
-def getEggColour(img, useSliders = False, takepic = 0):
+def getEggColour(img, useSliders = False, takepic = 0, pictexEggcolor="None"):
     # Step 1: Convert the image to HLS (Hue, Light, Saturation) colourspace
     imgHLS = cv2.cvtColor(img, cv2.COLOR_BGR2HLS)
 
@@ -40,8 +40,8 @@ def getEggColour(img, useSliders = False, takepic = 0):
         cv2.waitKey(1)
 
         if takepic > 0:
-            cv2.imwrite(f"Output/mask{takepic}.jpg", mask)
-            cv2.imwrite(f"Output/refinedMask{takepic}.png", refinedMask)
+            cv2.imwrite(f"Output/{pictexEggcolor}mask{takepic}.jpg", mask)
+            cv2.imwrite(f"Output/{pictexEggcolor}refinedMask{takepic}.png", refinedMask)
 
     # Step 5: if no egg is present, exit the function.
     if not isEgg:
@@ -76,7 +76,7 @@ def getEggColour(img, useSliders = False, takepic = 0):
         cv2.waitKey(1)
 
         if takepic > 0:
-            cv2.imwrite(f"Output/maskedEgg{takepic}.png", maskedegg)
+            cv2.imwrite(f"{pictexEggcolor}Output/maskedEgg{takepic}.png", maskedegg)
 
     return colourNames[closestColourIndex], int(mean[0])
 

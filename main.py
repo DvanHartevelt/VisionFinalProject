@@ -14,11 +14,14 @@ def main():
     Testpictures = False
     useServo = True
     samplingfrequency = 24 # in Hz
-    saveRedpic = False
+    saveRedpic = True
+    saveBluepic = True
+    saveYellowpic = True
 
     # 'global' variables in this function
     dtmax = 1 / samplingfrequency
     takepic = 0
+    pictexEggcolor = 'None'
 
     if useServo:
         GPIO.setmode(GPIO.BOARD)
@@ -66,11 +69,11 @@ def main():
                 cv2.waitKey(1)
 
                 if takepic > 0:
-                    cv2.imwrite(f"Output/CameraCapture{takepic}.png", frame)
-                    cv2.imwrite(f"Output/Window{takepic}.png", window)
+                    cv2.imwrite(f"Output/{pictexEggcolor}CameraCapture{takepic}.png", frame)
+                    cv2.imwrite(f"Output/{pictexEggcolor}Window{takepic}.png", window)
 
             # Step 2: extracting egg colour
-            seenColour, hue = getEggColour(window, useSliders=True, takepic=takepic)
+            seenColour, hue = getEggColour(window, useSliders=True, takepic=takepic, pictexEggcolor=pictexEggcolor)
 
             # Step 3: Checking if the bottom path needs to be closed
             if seenColour != "None" and seenColour != lastSeenColour:
@@ -79,12 +82,22 @@ def main():
                 if lastSeenColour == "red":
                     if saveRedpic:
                         takepic = 5
+                        pictexEggcolor = "red"
                         saveRedpic = False
 
                     print("Closing bottom path")
                     if useServo:
                         servo.ChangeDutyCycle(3.1)
                 else:
+                    if saveBluepic and lastSeenColour == "blue":
+                        takepic = 5
+                        pictexEggcolor = "blue"
+                        saveBluepic = False
+
+                    if saveYellowpic and lastSeenColour == "yellow":
+                        takepic = 5
+                        pictexEggcolor = "blue"
+                        saveBluepic = False
                     print("Opening bottom path")
                     if useServo:
                         servo.ChangeDutyCycle(8.0)
