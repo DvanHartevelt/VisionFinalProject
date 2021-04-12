@@ -76,7 +76,7 @@ def getEggColour(img, useSliders = False, takepic = 0, pictexEggcolor="None"):
         cv2.waitKey(1)
 
         if takepic > 0:
-            cv2.imwrite(f"{pictexEggcolor}Output/maskedEgg{takepic}.png", maskedegg)
+            cv2.imwrite(f"Output/{pictexEggcolor}maskedEgg{takepic}.png", maskedegg)
 
     return colourNames[closestColourIndex], int(mean[0])
 
@@ -139,9 +139,9 @@ def showTrackbars():
     cv2.resizeWindow("Trackbars", 640, 240)
     cv2.createTrackbar("Hue Min", "Trackbars", 0, 360, printTrackbars)
     cv2.createTrackbar("Hue Max", "Trackbars", 360, 360, printTrackbars)
-    cv2.createTrackbar("Lit Min", "Trackbars", 51, 255, printTrackbars)
+    cv2.createTrackbar("Lit Min", "Trackbars", 41, 255, printTrackbars)
     cv2.createTrackbar("Lit Max", "Trackbars", 171, 255, printTrackbars)
-    cv2.createTrackbar("Sat Min", "Trackbars", 34, 255, printTrackbars)
+    cv2.createTrackbar("Sat Min", "Trackbars", 31, 255, printTrackbars)
     cv2.createTrackbar("Sat Max", "Trackbars", 255, 255, printTrackbars)
     cv2.createTrackbar("Area Min", "Trackbars", 661, 2000, printTrackbars)
 

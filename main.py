@@ -14,8 +14,8 @@ def main():
     Testpictures = False
     useServo = True
     samplingfrequency = 24 # in Hz
-    saveRedpic = True
-    saveBluepic = True
+    saveRedpic = False
+    saveBluepic = False
     saveYellowpic = True
 
     # 'global' variables in this function
@@ -96,7 +96,7 @@ def main():
 
                     if saveYellowpic and lastSeenColour == "yellow":
                         takepic = 5
-                        pictexEggcolor = "blue"
+                        pictexEggcolor = "yellow"
                         saveBluepic = False
                     print("Opening bottom path")
                     if useServo:
